@@ -10,14 +10,19 @@ version = "1.1-bukkit"
 repositories {
     mavenCentral()
     maven ("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+
+
+    maven {
+        url = uri("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+    }
 }
 
 dependencies {
     implementation ("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.22")
     testImplementation(kotlin("test"))
-    implementation("org.apache.httpcomponents.client5:httpclient5:5.3.1")
     implementation("com.google.code.gson:gson:2.10.1")
     compileOnly("org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT")
+    compileOnly("me.clip:placeholderapi:2.11.4")
 }
 
 tasks.test {
