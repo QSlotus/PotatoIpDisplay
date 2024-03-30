@@ -1,5 +1,7 @@
-package indi.nightfish.potato_ip_display
+package indi.nightfish.potato_ip_display.listener
 
+import indi.nightfish.potato_ip_display.IpATTRMap
+import indi.nightfish.potato_ip_display.PotatoIpDisplay
 import me.clip.placeholderapi.PlaceholderAPI
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler

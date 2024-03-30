@@ -1,8 +1,9 @@
-package indi.nightfish.potato_ip_display
+package indi.nightfish.potato_ip_display.listener
 
-import indi.nightfish.potato_ip_display.ip.IpParseFactory
+import indi.nightfish.potato_ip_display.IpATTRMap
+import indi.nightfish.potato_ip_display.PotatoIpDisplay
+import indi.nightfish.potato_ip_display.parser.IpParseFactory
 import org.bukkit.Bukkit
-import org.bukkit.ChatColor
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent

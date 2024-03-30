@@ -1,6 +1,8 @@
-package indi.nightfish.potato_ip_display.ip
+package indi.nightfish.potato_ip_display.parser
 
 import indi.nightfish.potato_ip_display.PotatoIpDisplay
+import indi.nightfish.potato_ip_display.parser.provider.Ip2regionParser
+import indi.nightfish.potato_ip_display.parser.provider.PconlineParser
 import org.bukkit.Bukkit
 
 object IpParseFactory {
@@ -9,8 +11,8 @@ object IpParseFactory {
         val plugin = Bukkit.getPluginManager().getPlugin("PotatoIpDisplay") as PotatoIpDisplay
         val conf = plugin.conf
         return when (val mode = conf.options.mode) {
-            "pconline" -> PconlineParse(ip)
-            "ip2region" -> Ip2regionParse(ip)
+            "pconline" -> PconlineParser(ip)
+            "ip2region" -> Ip2regionParser(ip)
             else -> throw IllegalArgumentException("Invalid mode in config >> $mode")
         }
     }

@@ -1,9 +1,10 @@
-package indi.nightfish.potato_ip_display.ip
+package indi.nightfish.potato_ip_display.parser.provider
 
+import indi.nightfish.potato_ip_display.parser.IpParse
 import org.lionsoul.ip2region.xdb.Searcher
 
 
-class Ip2regionParse(private val ip: String) : IpParse {
+class Ip2regionParser(private val ip: String) : IpParse {
 
     private val dbFile: String = "plugins/PotatoIpDisplay/ip2region.xdb"
 
@@ -20,7 +21,7 @@ class Ip2regionParse(private val ip: String) : IpParse {
 
     */
 
-    override fun getRegion(): String {
+    override fun getDistrict(): String {
         return "null"
     }
 

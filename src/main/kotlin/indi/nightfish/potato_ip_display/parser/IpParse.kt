@@ -1,7 +1,7 @@
-package indi.nightfish.potato_ip_display.ip
+package indi.nightfish.potato_ip_display.parser
 
 interface IpParse {
-    fun getRegion(): String
+    fun getDistrict(): String
     fun getCountry(): String
     fun getProvince(): String
     fun getCity(): String

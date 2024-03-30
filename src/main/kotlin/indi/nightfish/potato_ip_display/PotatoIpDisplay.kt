@@ -1,12 +1,15 @@
 package indi.nightfish.potato_ip_display
 
+import indi.nightfish.potato_ip_display.integration.PlaceholderIntergration
+import indi.nightfish.potato_ip_display.listener.MessageListener
+import indi.nightfish.potato_ip_display.listener.PlayerJoinListener
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 
 
 class PotatoIpDisplay : JavaPlugin() {
-    lateinit var conf: PIPDConfig
+    lateinit var conf: Config
     override fun onLoad() {
         super.onLoad()
         logger.info("Loading")
@@ -15,15 +18,21 @@ class PotatoIpDisplay : JavaPlugin() {
     override fun onEnable() {
         super.onEnable()
         val pm = Bukkit.getPluginManager()
-        conf = loadPIPDConfig(config)
+        conf = loadConfig(config)
 
         if (!File(dataFolder, "config.yml").exists()) {
             saveDefaultConfig()
         }
 
-        /*if (pm.getPlugin("PlaceholderAPI") == null) {
-            logger.warning("Could not find PlaceholderAPI! The placeholders will not work!");
-        }*/
+        if (conf.papi.enabled) {
+            if (pm.getPlugin("PlaceholderAPI") != null) {
+                PlaceholderIntergration(this).register()
+            } else {
+                throw RuntimeException("PlaceholderAPI enabled in config but NOT installed!")
+            }
+        }
+
+
 
         logger.info("Registering event -> Listener")
         if (conf.message.playerChat.enabled) {

@@ -1,4 +1,4 @@
-package indi.nightfish.potato_ip_display.ip
+package indi.nightfish.potato_ip_display.parser
 
 
 data class IpGson(
