@@ -9,7 +9,8 @@ data class Config(
     val papi: PAPISupport,
 ) {
     data class Options(
-        val mode: String
+        val mode: String,
+        val allowbStats: Boolean
     )
 
     data class Message(
@@ -29,7 +30,6 @@ data class Config(
 
     data class PAPISupport(
         val enabled: Boolean,
-        val format: String
     )
 }
 
@@ -38,9 +38,10 @@ fun loadConfig(fc: FileConfiguration): Config {
         fc.getInt("config-version"),
 
         Config.Options(
-            fc.getString("options.mode")
-                ?: "ip2region"
+            fc.getString("options.mode") ?: "ip2region",
+            fc.getBoolean("options.allow-bstats")
         ),
+
 
         Config.Message(
             Config.Message.PlayerChat(
@@ -56,9 +57,7 @@ fun loadConfig(fc: FileConfiguration): Config {
         ),
 
         Config.PAPISupport(
-            fc.getBoolean("papi.enabled"),
-            fc.getString("papi.format") ?: ""
-
+            fc.getBoolean("papi.enabled")
         )
     )
 }

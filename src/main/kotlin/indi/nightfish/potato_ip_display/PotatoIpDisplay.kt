@@ -3,6 +3,7 @@ package indi.nightfish.potato_ip_display
 import indi.nightfish.potato_ip_display.integration.PlaceholderIntergration
 import indi.nightfish.potato_ip_display.listener.MessageListener
 import indi.nightfish.potato_ip_display.listener.PlayerJoinListener
+import me.clip.placeholderapi.metrics.bukkit.Metrics
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
@@ -32,15 +33,17 @@ class PotatoIpDisplay : JavaPlugin() {
             }
         }
 
-
-
         logger.info("Registering event -> Listener")
         if (conf.message.playerChat.enabled) {
             // NOTE: formerly "parseOnly", but now we determine if PIPD listens for messages depending on it
             pm.registerEvents(MessageListener(), this)
         }
         if (conf.options.mode == "ip2region" && !File(dataFolder, "ip2region.xdb").exists()) {
-            logger.warning("ip2region.xdb NOT FOUND! place into \"plugins/PotatoIpDisplay/ip2region.xdb\"")
+            // Save ip2region DB if not exist
+            saveResource("ip2region.xdb", false)
+        }
+        if (conf.options.allowbStats) {
+            Metrics(this, 21473)
         }
 
         pm.registerEvents(PlayerJoinListener(), this)

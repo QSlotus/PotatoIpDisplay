@@ -2,7 +2,7 @@
 # A Plugin for Checking Player Ip Attributions.
 # Learn more at [https://github.com/dmzz-yyhyy/PotatoIpDisplay]
 
-# [Int] DO NOT TOUCH THIS!
+# DO NOT TOUCH THIS!
 config-version: 1
 
 # General options
@@ -11,23 +11,25 @@ options:
   # "ip2region" depends on ip2region.xdb in the plugin directory to work.
   # Get it from [https://github.com/lionsoul2014/ip2region/tree/master/data]
   mode: "ip2region"
+  # Allow bStats analytics
+  allow-bstats: true
 
 messages:
   # Messages sent by players. Use plugin to format
   player-chat:
-    # [Boolean] Whether to listen for, and take over player chat messages
+    # Whether to listen for, and take over player chat messages
     enabled: true
     string: "§7[§b%ipAttr%§7] §f%playerName% §7>> §f%msg%"
 
   # Send a message to the player after logging in
   player-login:
-    # [Boolean] Send a message after player login
+    # Send a message after player login
     enabled: true
     string: "§7[§6PotatoIpDisplay§7] §e您当前IP归属地 §7[§b%ipAttr%§7]"
 
 # Placeholder API options
-# TODO: WIP.
 papi:
-  # [Boolean] Enable PAPI support.
+  # Enable PAPI support.
   enabled: false
-  format: ""
+  # Available placeholders:
+  # [https://github.com/dmzz-yyhyy/PotatoIpDisplay#placeholder-api]
