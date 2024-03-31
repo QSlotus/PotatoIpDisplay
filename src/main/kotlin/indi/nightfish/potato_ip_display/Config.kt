@@ -4,12 +4,14 @@ import org.bukkit.configuration.file.FileConfiguration
 
 data class Config(
     val configVersion: Int,
+    val pluginConfigVersion: Int,
     val options: Options,
     val message: Message,
     val papi: PAPISupport,
 ) {
     data class Options(
         val mode: String,
+        val xdbBuffer: String,
         val allowbStats: Boolean
     )
 
@@ -36,9 +38,11 @@ data class Config(
 fun loadConfig(fc: FileConfiguration): Config {
     return Config(
         fc.getInt("config-version"),
+        1, // plugin reserved config version
 
         Config.Options(
             fc.getString("options.mode") ?: "ip2region",
+            fc.getString("options.xdb-buffer") ?: "vindex",
             fc.getBoolean("options.allow-bstats")
         ),
 

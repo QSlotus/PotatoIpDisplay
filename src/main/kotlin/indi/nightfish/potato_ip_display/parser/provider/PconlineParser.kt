@@ -6,7 +6,7 @@ import indi.nightfish.potato_ip_display.parser.IpParse
 
 class PconlineParser(ip: String) : IpParse {
     private val parseData: IpGson = Gson().fromJson("https://whois.pconline.com.cn/ipJson.jsp?ip=$ip&json=true", IpGson::class.java)
-    override fun getDistrict(): String = parseData.region
+    override fun getRegion(): String = parseData.region
 
     override fun getCountry(): String = if (parseData.pro.replace("省", "") == "") {
         Regex(pattern = """[\u4e00-\u9fa5]+""")

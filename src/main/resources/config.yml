@@ -1,35 +1,42 @@
-# Configurations for PotatoIpDisplay-bukkit,
-# A Plugin for Checking Player Ip Attributions.
-# Learn more at [https://github.com/dmzz-yyhyy/PotatoIpDisplay]
+# PotatoIpDisplay-bukkit 配置文件
+# 一款用于显示玩家 IP 归属地的 Minecraft 插件
+# 详情：[https://github.com/dmzz-yyhyy/PotatoIpDisplay]
 
-# DO NOT TOUCH THIS!
+# 请勿修改！
 config-version: 1
 
-# General options
+# 常规设置
 options:
-  # Working API: "pconline"(remote) or "ip2region"(local)
-  # "ip2region" depends on ip2region.xdb in the plugin directory to work.
-  # Get it from [https://github.com/lionsoul2014/ip2region/tree/master/data]
+  # 查询模式: "pconline"（在线 API）或 "ip2region"（本地）
+  # "ip2region" 模式为本地查询，插件会自动保存内置的文件至对应路径。
+  # 也可以从 [https://github.com/lionsoul2014/ip2region/tree/master/data] 下载
   mode: "ip2region"
-  # Allow bStats analytics
+  # 缓存模式：只有模式设置为 ip2region 时生效，用于加速查询。
+  # "none": 完全基于文件，不进行缓存。
+  # "vindex": 额外占用固定的 512 KB 内存，缓存 VectorIndex 数据。
+  # "cbuff": 额外占用文件大小的内存，缓存整个 ip2region.xdb。
+  xdb-buffer: "vindex"
+  # 开启 bStats 统计
   allow-bstats: true
 
+# 消息设置
 messages:
-  # Messages sent by players. Use plugin to format
   player-chat:
-    # Whether to listen for, and take over player chat messages
-    enabled: true
+    # 是否接管玩家消息事件。
+    # 与其他消息格式化插件冲突。
+    enabled: false
+    # 消息格式
     string: "§7[§b%ipAttr%§7] §f%playerName% §7>> §f%msg%"
 
-  # Send a message to the player after logging in
   player-login:
-    # Send a message after player login
+    # 是否在玩家登录后发送一条消息显示 IP 归属地。
     enabled: true
+    # 消息格式
     string: "§7[§6PotatoIpDisplay§7] §e您当前IP归属地 §7[§b%ipAttr%§7]"
 
-# Placeholder API options
+# Placeholder API 设置
 papi:
-  # Enable PAPI support.
+  # 启用 PAPI 支持。需要安装 Placeholder API。
   enabled: false
-  # Available placeholders:
+  # 可用变量：
   # [https://github.com/dmzz-yyhyy/PotatoIpDisplay#placeholder-api]

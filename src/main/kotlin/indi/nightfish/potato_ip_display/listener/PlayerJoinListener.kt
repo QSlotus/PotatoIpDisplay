@@ -19,7 +19,16 @@ class PlayerJoinListener : Listener {
         val playerAddress = event.realAddress.hostAddress
         val playerName = event.player.name
         val ipParse = IpParseFactory.getIpParse(playerAddress)
-        IpATTRMap.playerIpATTRMap[playerName] = ipParse.getProvince()
+        var result = ipParse.getProvince()
+
+        if (result == "未知" || result == "") {
+            result = ipParse.getCity()
+            if (result == "未知" || result == "") {
+                result = ipParse.getCountry()
+            }
+        }
+
+        IpATTRMap.playerIpATTRMap[playerName] = result
         Bukkit.getServer().logger.info("Player named $playerName connect to proxy from ${ipParse.getISP()}")
     }
 

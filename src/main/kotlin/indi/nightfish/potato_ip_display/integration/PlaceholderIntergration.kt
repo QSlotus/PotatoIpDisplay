@@ -30,7 +30,7 @@ class PlaceholderIntergration(plugin: JavaPlugin) : PlaceholderExpansion() {
             "country" -> ipParse.getCountry()
             "province" -> ipParse.getProvince()
             "city" -> ipParse.getCity()
-            "district" -> ipParse.getDistrict()
+            "region" -> ipParse.getRegion()
             "isp" -> ipParse.getISP()
             else -> null
         }
