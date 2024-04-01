@@ -1,4 +1,4 @@
-package indi.nightfish.potato_ip_display
+package indi.nightfish.potato_ip_display.util
 
 import org.bukkit.configuration.file.FileConfiguration
 

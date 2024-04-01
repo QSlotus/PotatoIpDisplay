@@ -1,9 +1,10 @@
 package indi.nightfish.potato_ip_display
 
-import indi.nightfish.potato_ip_display.command.PotatoIpDisplayCommand
 import indi.nightfish.potato_ip_display.integration.PlaceholderIntergration
 import indi.nightfish.potato_ip_display.listener.MessageListener
 import indi.nightfish.potato_ip_display.listener.PlayerJoinListener
+import indi.nightfish.potato_ip_display.util.Config
+import indi.nightfish.potato_ip_display.util.loadConfig
 import me.clip.placeholderapi.metrics.bukkit.Metrics
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
@@ -14,7 +15,7 @@ class PotatoIpDisplay : JavaPlugin() {
     lateinit var conf: Config
     override fun onLoad() {
         super.onLoad()
-        this.reloadConfig()
+        reloadConfig()
     }
 
     override fun onEnable() {
@@ -40,8 +41,8 @@ class PotatoIpDisplay : JavaPlugin() {
         pm.registerEvents(PlayerJoinListener(), this)
 
         /* Registering commands */
-        getCommand("potatoipdisplay")!!.setExecutor(PotatoIpDisplayCommand())
-        getCommand("pipd")!!.setExecutor(PotatoIpDisplayCommand())
+        /*getCommand("potatoipdisplay")!!.setExecutor(PotatoIpDisplayCommand())
+        getCommand("pipd")!!.setExecutor(PotatoIpDisplayCommand())*/
 
         if (conf.options.allowbStats) {
             Metrics(this, 21473)

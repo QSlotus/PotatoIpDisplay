@@ -2,8 +2,11 @@ package indi.nightfish.potato_ip_display.parser.provider
 
 import indi.nightfish.potato_ip_display.PotatoIpDisplay
 import indi.nightfish.potato_ip_display.parser.IpParse
+import indi.nightfish.potato_ip_display.util.IpAttributeMap
 import org.bukkit.Bukkit
 import org.lionsoul.ip2region.xdb.Searcher
+import java.util.concurrent.CompletableFuture
+import java.util.logging.Level
 
 
 class Ip2regionParser(private val ip: String) : IpParse {
@@ -32,25 +35,39 @@ class Ip2regionParser(private val ip: String) : IpParse {
 
     */
 
-    override fun getCountry(): String = getIp2regionData(0)
+    override fun getCountry(): String = getIp2regionData()
+        .split("|")[0]
 
-    override fun getRegion(): String = getIp2regionData(1)
+    override fun getRegion(): String = getIp2regionData()
+        .split("|")[1]
 
-    override fun getProvince(): String = getIp2regionData(2).replace("省", "")
+    override fun getProvince(): String = getIp2regionData()
+        .split("|")[2]
+        .replace("省", "")
 
-    override fun getCity(): String = getIp2regionData(3).replace("市", "")
+    override fun getCity(): String = getIp2regionData()
+        .split("|")[3]
+        .replace("市", "")
 
-    override fun getISP(): String = getIp2regionData(4)
+    override fun getISP(): String = getIp2regionData()
+        .split("|")[4]
 
-    private fun getIp2regionData(index: Int): String {
-        val data = try {
-            searcher.search(ip).split("|")
-        } catch (e: Exception) {
-            return unknown
+    private fun getIp2regionData(): String {
+        val map = IpAttributeMap.ip2regionRawDataMap[ip]
+        if (map != null) {
+           return map
         }
-        return when (data[index]) {
-            "0" -> unknown
-            else -> data[index]
+
+        val future = CompletableFuture<String>()
+        val thread = Thread {
+            val result = searcher.search(ip)
+            future.complete(result)
+            IpAttributeMap.ip2regionRawDataMap[ip] = result
         }
+        thread.start()
+        plugin.log(future.get(), Level.WARNING)
+        return future.get()
     }
+
+
 }

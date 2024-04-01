@@ -1,6 +1,6 @@
 package indi.nightfish.potato_ip_display.listener
 
-import indi.nightfish.potato_ip_display.IpATTRMap
+import indi.nightfish.potato_ip_display.util.IpAttributeMap
 import indi.nightfish.potato_ip_display.PotatoIpDisplay
 import me.clip.placeholderapi.PlaceholderAPI
 import org.bukkit.Bukkit
@@ -17,7 +17,7 @@ class MessageListener : Listener {
     fun onPlayerChat(event: AsyncPlayerChatEvent) {
         val playerName = event.player.name
         var msg = event.message
-        val ipAttr = IpATTRMap.playerIpATTRMap[playerName] ?: "未知"
+        val ipAttr = IpAttributeMap.playerIpAttributeMap[playerName] ?: "未知"
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             msg = PlaceholderAPI.setPlaceholders(event.player, msg);

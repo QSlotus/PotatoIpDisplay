@@ -1,6 +1,6 @@
 package indi.nightfish.potato_ip_display.listener
 
-import indi.nightfish.potato_ip_display.IpATTRMap
+import indi.nightfish.potato_ip_display.util.IpAttributeMap
 import indi.nightfish.potato_ip_display.PotatoIpDisplay
 import indi.nightfish.potato_ip_display.parser.IpParseFactory
 import org.bukkit.Bukkit
@@ -28,13 +28,13 @@ class PlayerJoinListener : Listener {
             }
         }
 
-        IpATTRMap.playerIpATTRMap[playerName] = result
+        IpAttributeMap.playerIpAttributeMap[playerName] = result
         plugin.log("Player named $playerName connect to proxy from ${ipParse.getProvince()}${ipParse.getCity()} ${ipParse.getISP()}")
     }
 
     @EventHandler
     fun onPlayerJoin(event: PlayerJoinEvent) {
-        val ipAttr = IpATTRMap.playerIpATTRMap[event.player.name] ?: "未知"
+        val ipAttr = IpAttributeMap.playerIpAttributeMap[event.player.name] ?: "未知"
         if (conf.message.playerLogin.enabled) {
             event.player.sendMessage(conf.message.playerLogin.string
                 .replace("%ipAttr%", ipAttr))
