@@ -65,7 +65,6 @@ class Ip2regionParser(private val ip: String) : IpParse {
             IpAttributeMap.ip2regionRawDataMap[ip] = result
         }
         thread.start()
-        plugin.log(future.get(), Level.WARNING)
         return future.get()
     }
 
