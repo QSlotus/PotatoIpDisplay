@@ -1,20 +1,20 @@
 # PotatoIpDisplay
 
-一款用于显示玩家Ip归属地的Minecraft插件，支持 Bukkit 和 Velocity
+一款用于显示玩家 Ip 归属地的 Bukkit 插件。
 
 ## 使用文档（中文）
 详见 [此处](https://upt.curiousers.org/docs/PotatoIpDisplay/intro)
 
 ## Placeholder API
 
-| 变量                           | 描述      | 返回示例        |
-|:-----------------------------|:--------|:------------|
-| `%potatoipdisplay_ip%`       | 玩家的 IP  | `11.45.1.4` |
-| `%potatoipdisplay_country%`  | IP 所属国家 | `中国`        |
-| `%potatoipdisplay_province%` | IP 所属省份 | `上海`        |
-| `%potatoipdisplay_city%`     | IP 所属城市 | `上海`        |
-| `%potatoipdisplay_region%`   | IP 所属区域 | `未知`（可能无法识别 |
-| `%potatoipdisplay_isp%`      | 运营商信息   | `联通`        |
+| 变量                           | 描述      | 返回内容(`ip2region`) | 返回内容(`pconline`) |
+|:-----------------------------|:--------|:------------------|:-----------------|
+| `%potatoipdisplay_ip%`       | 玩家的 IP  | `11.45.1.4`       | `11.45.1.4`      |
+| `%potatoipdisplay_country%`  | IP 所属国家 | `中国`              | `中国`             |
+| `%potatoipdisplay_province%` | IP 所属省份 | `上海`              | `上海市`            |
+| `%potatoipdisplay_city%`     | IP 所属城市 | `上海`              | `上海`             |
+| `%potatoipdisplay_region%`   | IP 所属区域 | `0`               | ` `              |
+| `%potatoipdisplay_isp%`      | 运营商信息   | `联通`              | `上海市 联通`         |
 
 ![demo](assets/papidemo.png)
 

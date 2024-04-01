@@ -12,7 +12,7 @@ object IpParseFactory {
         val conf = plugin.conf
         return when (val mode = conf.options.mode) {
             "pconline" -> PconlineParser(ip)
-            "ip2region" -> Ip2regionParser("115.58.254.8")
+            "ip2region" -> Ip2regionParser(ip)
             else -> throw IllegalArgumentException("Invalid mode in config >> $mode")
         }
     }
