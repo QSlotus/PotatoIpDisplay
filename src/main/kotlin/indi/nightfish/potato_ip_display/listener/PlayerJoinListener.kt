@@ -29,7 +29,7 @@ class PlayerJoinListener : Listener {
         }
 
         IpATTRMap.playerIpATTRMap[playerName] = result
-        Bukkit.getServer().logger.info("Player named $playerName connect to proxy from ${ipParse.getISP()}")
+        plugin.log("Player named $playerName connect to proxy from ${ipParse.getProvince()}${ipParse.getCity()} ${ipParse.getISP()}")
     }
 
     @EventHandler

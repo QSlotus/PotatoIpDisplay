@@ -3,3 +3,9 @@ main: indi.nightfish.potato_ip_display.PotatoIpDisplay
 version: 1.2
 author: "NightFish"
 softdepend: [PlaceholderAPI]
+commands:
+  potatoipdisplay:
+    description: Main command of PotatoIpDisplay.
+    aliases:
+      - pipd
+    usage: /potatoipdisplay

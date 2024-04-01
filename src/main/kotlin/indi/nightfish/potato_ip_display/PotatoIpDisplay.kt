@@ -1,5 +1,6 @@
 package indi.nightfish.potato_ip_display
 
+import indi.nightfish.potato_ip_display.command.PotatoIpDisplayCommand
 import indi.nightfish.potato_ip_display.integration.PlaceholderIntergration
 import indi.nightfish.potato_ip_display.listener.MessageListener
 import indi.nightfish.potato_ip_display.listener.PlayerJoinListener
@@ -7,13 +8,13 @@ import me.clip.placeholderapi.metrics.bukkit.Metrics
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
-
+import java.util.logging.Level
 
 class PotatoIpDisplay : JavaPlugin() {
     lateinit var conf: Config
     override fun onLoad() {
         super.onLoad()
-        logger.info("Loading")
+        this.reloadConfig()
     }
 
     override fun onEnable() {
@@ -21,9 +22,7 @@ class PotatoIpDisplay : JavaPlugin() {
         val pm = Bukkit.getPluginManager()
         conf = loadConfig(config)
 
-        if (!File(dataFolder, "config.yml").exists()) {
-            saveDefaultConfig()
-        }
+        initResources()
 
         if (conf.papi.enabled) {
             if (pm.getPlugin("PlaceholderAPI") != null) {
@@ -33,25 +32,41 @@ class PotatoIpDisplay : JavaPlugin() {
             }
         }
 
-        logger.info("Registering event -> Listener")
+        /* Registering events" */
         if (conf.message.playerChat.enabled) {
             // NOTE: formerly "parseOnly", but now we determine if PIPD listens for messages depending on it
             pm.registerEvents(MessageListener(), this)
         }
-        if (conf.options.mode == "ip2region" && !File(dataFolder, "ip2region.xdb").exists()) {
-            // Save ip2region DB if not exist
-            saveResource("ip2region.xdb", false)
-        }
+        pm.registerEvents(PlayerJoinListener(), this)
+
+        /* Registering commands */
+        getCommand("potatoipdisplay")!!.setExecutor(PotatoIpDisplayCommand())
+        getCommand("pipd")!!.setExecutor(PotatoIpDisplayCommand())
+
         if (conf.options.allowbStats) {
             Metrics(this, 21473)
         }
-
-        pm.registerEvents(PlayerJoinListener(), this)
-        logger.info("Ready. Using ${conf.options.mode} mode.")
+        log("PotatoIpDisplay has been enabled")
     }
 
     override fun onDisable() {
         super.onDisable()
-        logger.info("Disabled")
+        log("Disabled")
     }
+
+    private fun initResources() {
+        val configFile = File(dataFolder, "config.yml")
+        val dbFile = File(dataFolder, "ip2region.xdb")
+
+        if(!configFile.exists()) {
+            this.saveDefaultConfig()
+        }
+        if (conf.options.mode == "ip2region" && !dbFile.exists()) {
+            // Save ip2region DB if not exist
+            saveResource("ip2region.xdb", false)
+        }
+    }
+
+    fun log(message: String, level: Level = Level.INFO) =
+        logger.log(level, message)
 }

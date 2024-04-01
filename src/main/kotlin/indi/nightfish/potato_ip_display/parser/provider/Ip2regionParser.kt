@@ -12,24 +12,16 @@ class Ip2regionParser(private val ip: String) : IpParse {
     private val plugin = Bukkit.getPluginManager().getPlugin("PotatoIpDisplay") as PotatoIpDisplay
     private val xdbBuffer = plugin.conf.options.xdbBuffer
 
-
-    private val searcher: Searcher = when (xdbBuffer) {
-        "none" -> {
-            Searcher.newWithFileOnly(dbPath)
-        }
-        "vindex" -> {
-            val vIndex: ByteArray = Searcher.loadVectorIndexFromFile(dbPath)
-            Searcher.newWithVectorIndex(dbPath, vIndex)
-        }
-        "cbuff" -> {
-            val cBuff: ByteArray = Searcher.loadContentFromFile(dbPath)
-            Searcher.newWithBuffer(cBuff)
-        }
-        else -> {
-            throw IllegalArgumentException("Invalid xdbBuffer in config >> $xdbBuffer")
+    private val searcher by lazy {
+        when (xdbBuffer) {
+            "none" -> Searcher.newWithFileOnly(dbPath)
+            "vindex" -> Searcher.newWithVectorIndex(dbPath,
+                Searcher.loadVectorIndexFromFile(dbPath))
+            "cbuff" -> Searcher.newWithBuffer(
+                Searcher.loadContentFromFile(dbPath))
+            else -> throw IllegalArgumentException("Invalid xdbBuffer in config >> $xdbBuffer")
         }
     }
-
 
     /* Structure of the information returned:
     INDEX:  |    0    |   1    |     2    |    3   |   4   |
@@ -40,41 +32,25 @@ class Ip2regionParser(private val ip: String) : IpParse {
 
     */
 
-    override fun getRegion(): String {
-        // ip2region doesn't seem to be able to return region information
-        val region = try {
-            searcher.search(ip).split("|")[1]
-        } catch (e: Exception) { "" }
-        return if (region == "0") unknown else region
-    }
+    override fun getCountry(): String = getIp2regionData(0)
 
-    override fun getCountry(): String {
-        val country = try {
-            searcher.search(ip).split("|")[0]
-        } catch (e: Exception) { "" }
-        return if (country == "0") unknown else country
-    }
+    override fun getRegion(): String = getIp2regionData(1)
 
-    override fun getProvince(): String {
-        val province = try {
-            searcher.search(ip).split("|")[2].replace("省", "")
-        } catch (e: Exception) { "" }
-        // If null replace with getCountry()
-        return if (province == "0") unknown else province
-    }
+    override fun getProvince(): String = getIp2regionData(2).replace("省", "")
 
+    override fun getCity(): String = getIp2regionData(3).replace("市", "")
 
-    override fun getCity(): String {
-        val city = try {
-            searcher.search(ip).split("|")[3].replace("市", "")
-        } catch (e: Exception) { "" }
-        return if (city == "0") unknown else city
-    }
+    override fun getISP(): String = getIp2regionData(4)
 
-    override fun getISP(): String {
-        val isp = try {
-            searcher.search(ip).split("|")[4]
-        } catch (e: Exception) { "" }
-        return if (isp == "0") unknown else isp
+    private fun getIp2regionData(index: Int): String {
+        val data = try {
+            searcher.search(ip).split("|")
+        } catch (e: Exception) {
+            return unknown
+        }
+        return when (data[index]) {
+            "0" -> unknown
+            else -> data[index]
+        }
     }
 }
