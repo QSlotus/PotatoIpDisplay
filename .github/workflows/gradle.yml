@@ -10,8 +10,18 @@ name: Java CI with Gradle
 on:
   push:
     branches: [ "bukkit" ]
+    paths:
+      - src/**
+      - build.gradle.kts
+      - gradle.properties.kts
+      - settings.gradle.kts
   pull_request:
     branches: [ "bukkit" ]
+    paths:
+      - src/**
+      - build.gradle.kts
+      - gradle.properties.kts
+      - settings.gradle.kts
 
 jobs:
   build:
