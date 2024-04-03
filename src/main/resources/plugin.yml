@@ -3,6 +3,7 @@ main: indi.nightfish.potato_ip_display.PotatoIpDisplay
 version: 1.2
 authors: ["NightFish", "yukonisen"]
 softdepend: [PlaceholderAPI]
+
 # commands:
 #  potatoipdisplay:
 #    description: Main command of PotatoIpDisplay.

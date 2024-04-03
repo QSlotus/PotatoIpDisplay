@@ -51,7 +51,7 @@ fun loadConfig(fc: FileConfiguration): Config {
             Config.Message.PlayerChat(
                 fc.getBoolean("messages.player-chat.enabled"),
                 fc.getString("messages.player-chat.string")
-                    ?: "§7[§b\$ipAttr§7] §f\$playerName §7>> §f\$msg" // FALLBACK CHAT FORMAT
+                    ?: "§7[§b\$ipAttr§7] §f\$playerName §7>> §f\$msg"  // FALLBACK CHAT FORMAT
             ),
             Config.Message.PlayerLogin(
                 fc.getBoolean("messages.player-login.enabled"),
