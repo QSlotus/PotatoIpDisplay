@@ -8,7 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin
 
 class PlaceholderIntergration(plugin: JavaPlugin) : PlaceholderExpansion() {
     override fun getAuthor(): String {
-        return "NightFish"
+        return "[NightFish, yukonisen]"
     }
 
     override fun getIdentifier(): String {

@@ -1,4 +1,4 @@
-package indi.nightfish.potato_ip_display.ip
+package indi.nightfish.potato_ip_display.http
 
 import java.io.*
 import java.net.HttpURLConnection
