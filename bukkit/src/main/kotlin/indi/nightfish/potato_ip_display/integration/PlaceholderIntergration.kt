@@ -1,12 +1,16 @@
 package indi.nightfish.potato_ip_display.integration
 
+import indi.nightfish.potato_ip_display.PotatoIpDisplay
 import indi.nightfish.potato_ip_display.parser.IpParseFactory
 import me.clip.placeholderapi.expansion.PlaceholderExpansion
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
-import org.bukkit.plugin.java.JavaPlugin
 
 
-class PlaceholderIntergration(plugin: JavaPlugin) : PlaceholderExpansion() {
+class PlaceholderIntergration : PlaceholderExpansion() {
+
+    private val plugin = Bukkit.getPluginManager().getPlugin("PotatoIpDisplay") as PotatoIpDisplay
+
     override fun getAuthor(): String {
         return "[NightFish, yukonisen]"
     }
@@ -16,7 +20,7 @@ class PlaceholderIntergration(plugin: JavaPlugin) : PlaceholderExpansion() {
     }
 
     override fun getVersion(): String {
-        return "1.2.0 "
+        return plugin.description.version
     }
 
     override fun onPlaceholderRequest(
@@ -32,6 +36,7 @@ class PlaceholderIntergration(plugin: JavaPlugin) : PlaceholderExpansion() {
             "city" -> ipParse.getCity()
             "region" -> ipParse.getRegion()
             "isp" -> ipParse.getISP()
+            "fallback" -> ipParse.getFallback()
             else -> null
         }
     }

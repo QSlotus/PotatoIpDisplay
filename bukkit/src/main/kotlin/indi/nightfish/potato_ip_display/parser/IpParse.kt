@@ -6,4 +6,5 @@ interface IpParse {
     fun getProvince(): String
     fun getCity(): String
     fun getISP(): String
+    fun getFallback(): String
 }

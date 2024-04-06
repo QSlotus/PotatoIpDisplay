@@ -10,3 +10,7 @@ plugins {
 }
 
 rootProject.name = "PotatoIpDisplay"
+include (
+    "bukkit",
+    /*"velocity",*/
+)

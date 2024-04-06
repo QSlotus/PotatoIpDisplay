@@ -27,7 +27,7 @@ class PotatoIpDisplay : JavaPlugin() {
 
         if (conf.papi.enabled) {
             if (pm.getPlugin("PlaceholderAPI") != null) {
-                PlaceholderIntergration(this).register()
+                PlaceholderIntergration().register()
             } else {
                 throw RuntimeException("PlaceholderAPI enabled in config but NOT installed!")
             }

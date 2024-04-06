@@ -33,6 +33,16 @@ class PconlineParser(private val ip: String) : IpParse {
     override fun getISP(): String =
         get["addr"]?.asString ?: unknown
 
+    override fun getFallback(): String {
+        val values = arrayOf(getProvince(), getCountry(), getCity())
+        for (value in values) {
+            if (value.isNotBlank() && value != "") {
+                return value
+            }
+        }
+        return unknown
+    }
+
     private fun getPconlineDataAsync(): JsonObject {
         val map = IpAttributeMap.pconlineRawDataMap[ip]
         if (map != null) return map
