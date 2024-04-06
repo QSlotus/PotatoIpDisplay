@@ -62,4 +62,4 @@ jobs:
         with:
           name: PotatoIpDisplay
           path: |
-            build\libs\*
+            build\libs\**
