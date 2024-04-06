@@ -58,6 +58,8 @@ jobs:
       - name: Build with Gradle Wrapper
         run: ./gradlew shadowJar
       - name: test
+        run: cd bukkit
+      - name: test
         run: ls
       - name: capture build artifacts
         uses: actions/upload-artifact@v3.1.1
