@@ -20,7 +20,7 @@ class MessageListener : Listener {
         val ipAttr = IpAttributeMap.playerIpAttributeMap[playerName] ?: "未知"
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            msg = PlaceholderAPI.setPlaceholders(event.player, msg);
+            msg = PlaceholderAPI.setPlaceholders(event.player, msg)
         }
         Bukkit.getServer().broadcastMessage(conf.message.playerChat.string
             .replace("%ipAttr%", ipAttr)

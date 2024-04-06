@@ -1,8 +1,9 @@
 name: PotatoIpDisplay
 main: indi.nightfish.potato_ip_display.PotatoIpDisplay
-version: 1.2
+version: ${pluginVersion}
 authors: ["NightFish", "yukonisen"]
 softdepend: [PlaceholderAPI]
+api-version: 1.13
 
 # commands:
 #  potatoipdisplay:

@@ -6,7 +6,6 @@ import indi.nightfish.potato_ip_display.util.IpAttributeMap
 import org.bukkit.Bukkit
 import org.lionsoul.ip2region.xdb.Searcher
 import java.util.concurrent.CompletableFuture
-import java.util.logging.Level
 
 
 class Ip2regionParser(private val ip: String) : IpParse {
@@ -35,24 +34,34 @@ class Ip2regionParser(private val ip: String) : IpParse {
 
     */
 
-    override fun getCountry(): String = getIp2regionData()
+    override fun getCountry(): String = getIp2regionDataAsync()
         .split("|")[0]
 
-    override fun getRegion(): String = getIp2regionData()
+    override fun getRegion(): String = getIp2regionDataAsync()
         .split("|")[1]
 
-    override fun getProvince(): String = getIp2regionData()
+    override fun getProvince(): String = getIp2regionDataAsync()
         .split("|")[2]
         .replace("省", "")
 
-    override fun getCity(): String = getIp2regionData()
+    override fun getCity(): String = getIp2regionDataAsync()
         .split("|")[3]
         .replace("市", "")
 
-    override fun getISP(): String = getIp2regionData()
+    override fun getISP(): String = getIp2regionDataAsync()
         .split("|")[4]
 
-    private fun getIp2regionData(): String {
+    override fun getFallback(): String {
+        val values = arrayOf(getCountry(), getRegion(), getProvince(), getCity())
+        for (value in values) {
+            if (value.isNotBlank() && value != "0") {
+                return value
+            }
+        }
+        return unknown
+    }
+
+    private fun getIp2regionDataAsync(): String {
         val map = IpAttributeMap.ip2regionRawDataMap[ip]
         if (map != null) {
            return map
