@@ -52,7 +52,7 @@ class Ip2regionParser(private val ip: String) : IpParse {
         .split("|")[4]
 
     override fun getFallback(): String {
-        val values = arrayOf(getCountry(), getRegion(), getProvince(), getCity())
+        val values = arrayOf(getProvince(), getCountry(), getCity())
         for (value in values) {
             if (value.isNotBlank() && value != "0") {
                 return value

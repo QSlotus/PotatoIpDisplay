@@ -34,7 +34,7 @@ class PconlineParser(private val ip: String) : IpParse {
         get["addr"]?.asString ?: unknown
 
     override fun getFallback(): String {
-        val values = arrayOf(getCountry(), getRegion(), getProvince(), getCity())
+        val values = arrayOf(getProvince(), getCountry(), getCity())
         for (value in values) {
             if (value.isNotBlank() && value != "") {
                 return value
