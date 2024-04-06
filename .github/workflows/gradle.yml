@@ -61,4 +61,4 @@ jobs:
         with:
           name: PotatoIpDisplay
           path: |
-            C:\Java\PotatoIpDisplay\PotatoIpDisplay\build\libs\PotatoIpDisplay--${{version}}-all
+            build\libs\PotatoIPDisplay-Bukkit-${pluginVersion}.jar
