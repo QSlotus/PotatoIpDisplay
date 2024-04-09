@@ -42,7 +42,7 @@ object UpdateUtil {
     fun checkForUpdatesAsync() {
         val local: String = plugin.description.version
         val thread = Thread {
-            val request = HttpRequest.newBuilder(URI.create("https://raw.githubusercontent.com/dmzz-yyhyy/PotatoIpDisplay/bukkit/PLUGIN_VERSION")).GET().build()
+            val request = HttpRequest.newBuilder(URI.create("https://raw.githubusercontent.com/dmzz-yyhyy/PotatoIpDisplay/master/PLUGIN_VERSION")).GET().build()
             val response = httpClient.send(request, HttpResponse.BodyHandlers.ofString())
             if (response.statusCode() == 200) {
                 val remote = response.body().trim().split("=")[1]
