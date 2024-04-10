@@ -20,18 +20,10 @@ class PlayerJoinListener : Listener {
 
         object : BukkitRunnable() {
                 override fun run() {
-                    val playerAddress = event.realAddress.hostAddress
+                    val playerAddress = event.address.hostAddress
                     val playerName = event.player.name
                     val ipParse = IpParseFactory.getIpParse(playerAddress)
-                    var result = ipParse.getProvince()
-
-                    if (result == "未知" || result == "") {
-                        result = ipParse.getCity()
-                        if (result == "未知" || result == "") {
-                            result = ipParse.getCountry()
-                        }
-                    }
-
+                    val result = ipParse.getFallback()
                     IpAttributeMap.playerIpAttributeMap[playerName] = result
                     plugin.log("Player named $playerName connect to proxy from ${ipParse.getProvince()}${ipParse.getCity()} ${ipParse.getISP()}")
                 }
