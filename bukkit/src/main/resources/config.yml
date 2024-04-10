@@ -7,7 +7,7 @@ config-version: 1
 
 # 常规设置
 options:
-  # 查询模式: "pconline"（在线 API）或 "ip2region"（本地）
+  # 查询模式: "pconline"（在线 API）, "ip2region"（本地）或 "ip-api"（在线 API）
   # "ip2region" 模式为本地查询，插件会自动保存内置的文件至对应路径。
   # 也可以从 [https://github.com/lionsoul2014/ip2region/tree/master/data] 下载
   mode: "ip2region"

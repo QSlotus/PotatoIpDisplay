@@ -5,13 +5,15 @@ import indi.nightfish.potato_ip_display.parser.IpParse
 import indi.nightfish.potato_ip_display.util.IpAttributeMap
 import org.bukkit.Bukkit
 import org.lionsoul.ip2region.xdb.Searcher
+import java.io.File
 import java.util.concurrent.CompletableFuture
 
 
 class Ip2regionParser(private val ip: String) : IpParse {
-    private val dbPath: String = "plugins/PotatoIpDisplay/ip2region.xdb"
-    private val unknown: String = "未知"
     private val plugin = Bukkit.getPluginManager().getPlugin("PotatoIpDisplay") as PotatoIpDisplay
+    private val dataFolder get() = plugin.dataFolder
+    private val dbPath = File(dataFolder, "ip2region.xdb").toPath().toString()
+    private val unknown: String = "未知"
     private val xdbBuffer = plugin.conf.options.xdbBuffer
 
     private val searcher by lazy {
@@ -34,27 +36,38 @@ class Ip2regionParser(private val ip: String) : IpParse {
 
     */
 
-    override fun getCountry(): String = getIp2regionDataAsync()
-        .split("|")[0]
+    override fun getCountry(): String {
+        val result = getIp2regionDataAsync().split("|")[0]
+        return if (result == "0") "未知" else result
+    }
 
-    override fun getRegion(): String = getIp2regionDataAsync()
-        .split("|")[1]
+    override fun getRegion(): String {
+        val result = getIp2regionDataAsync().split("|")[1]
+        return if (result == "0") "未知" else result
+    }
 
-    override fun getProvince(): String = getIp2regionDataAsync()
-        .split("|")[2]
-        .replace("省", "")
+    override fun getProvince(): String {
+        val result = getIp2regionDataAsync().split("|")[2]
+            .replace("省", "")
+        return if (result == "0") "未知" else result
+    }
 
-    override fun getCity(): String = getIp2regionDataAsync()
-        .split("|")[3]
-        .replace("市", "")
+    override fun getCity(): String {
+        val result = getIp2regionDataAsync().split("|")[3]
+            .replace("市", "")
+        return if (result == "0") "未知" else result
+    }
 
-    override fun getISP(): String = getIp2regionDataAsync()
-        .split("|")[4]
+    override fun getISP(): String {
+        val result = getIp2regionDataAsync().split("|")[4]
+        return if (result == "0") "未知" else result
+    }
+
 
     override fun getFallback(): String {
         val values = arrayOf(getProvince(), getCountry(), getCity())
         for (value in values) {
-            if (value.isNotBlank() && value != "0") {
+            if (value.isNotBlank() && value != unknown) {
                 return value
             }
         }
