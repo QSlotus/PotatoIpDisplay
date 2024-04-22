@@ -12,14 +12,14 @@ on:
   push:
     branches: [ "bukkit" ]
     paths:
-      - src/**
+      - bukkit/src/**
       - build.gradle.kts
       - gradle.properties.kts
       - settings.gradle.kts
   pull_request:
     branches: [ "bukkit" ]
     paths:
-      - src/**
+      - bukkit/src/**
       - build.gradle.kts
       - gradle.properties.kts
       - settings.gradle.kts
