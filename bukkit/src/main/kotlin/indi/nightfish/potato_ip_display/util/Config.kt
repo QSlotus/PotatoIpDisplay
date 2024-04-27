@@ -3,7 +3,7 @@ package indi.nightfish.potato_ip_display.util
 import org.bukkit.configuration.file.FileConfiguration
 
 data class Config(
-    val configVersion: Int,
+    val configVersion: Int = 1,
     val pluginConfigVersion: Int,
     val options: Options,
     val message: Message,

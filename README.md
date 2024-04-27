@@ -23,17 +23,26 @@
 ## 详细使用文档（中文）
 详见 [此处](https://upt.curiousers.org/docs/PotatoIpDisplay/intro) 。
 
+## 命令与权限
+
+| 命令                                  | 描述      | 权限                        |
+|:------------------------------------|:--------|:--------------------------|
+| /pipd                               | 等效      | `potatoipdisplay.command` | 
+| /potatoipdisplay                    | 插件信息    | `potatoipdisplay.command` | 
+| /potatoipdisplay lookup <玩家\|IPv4 > | 查询玩家或IP | `potatoipdisplay.lookup`  | 
+| /potatoipdisplay reload             | 重载插件    | `potatoipdisplay.reload`  | 
+
 ## Placeholder API
 
-| 变量                           | 描述          | 返回内容(`ip2region`) | 返回内容(`pconline`) |
-|:-----------------------------|:------------|:------------------|:-----------------|
-| `%potatoipdisplay_ip%`       | 玩家的 IP      | `11.45.1.4`       | `11.45.1.4`      |
-| `%potatoipdisplay_country%`  | IP 所属国家     | `中国`              | `中国`             |
-| `%potatoipdisplay_province%` | IP 所属省份     | `上海`              | `上海市`            |
-| `%potatoipdisplay_city%`     | IP 所属城市     | `上海`              | `上海`             |
-| `%potatoipdisplay_region%`   | IP 所属区域     | `0`               | ` `              |
-| `%potatoipdisplay_isp%`      | 运营商信息       | `联通`              | `上海市 联通`         |
-| `%potatoipdisplay_fallback%` | fallback 变量 | `上海`              | `上海`             |
+| 变量                           | 描述          |
+|:-----------------------------|:------------|
+| `%potatoipdisplay_ip%`       | 玩家的 IP      |
+| `%potatoipdisplay_country%`  | IP 所属国家     |
+| `%potatoipdisplay_province%` | IP 所属省份     |
+| `%potatoipdisplay_city%`     | IP 所属城市     |
+| `%potatoipdisplay_region%`   | IP 所属区域     |
+| `%potatoipdisplay_isp%`      | 运营商信息       |
+| `%potatoipdisplay_fallback%` | fallback 变量 |
 
 #### 什么是 fallback 变量？
 
@@ -42,7 +51,7 @@
 ![demo](assets/papidemo.png)
 
 ## bStats
-<a href="https://bstats.org/plugin/bukkit/PotatoIpDisplay/21473">![https://bstats.org/plugin/bukkit/PotatoIpDisplay/21473](https://bstats.org/signatures/bukkit/PotatoIpDisplay.svg)</a>
+![bStats](https://bstats.org/signatures/bukkit/PotatoIpDisplay.svg)</a>
 
 ## LICENSE
 ```

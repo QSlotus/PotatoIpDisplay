@@ -3,7 +3,6 @@ package indi.nightfish.potato_ip_display.listener
 import indi.nightfish.potato_ip_display.PotatoIpDisplay
 import indi.nightfish.potato_ip_display.parser.IpParseFactory
 import indi.nightfish.potato_ip_display.util.IpAttributeMap
-import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
@@ -11,8 +10,8 @@ import org.bukkit.event.player.PlayerLoginEvent
 import org.bukkit.scheduler.BukkitRunnable
 
 
-class PlayerJoinListener : Listener {
-    private val plugin = Bukkit.getPluginManager().getPlugin("PotatoIpDisplay") as PotatoIpDisplay
+class PlayerJoinListener(plugin: PotatoIpDisplay) : Listener {
+    private val plugin: PotatoIpDisplay
     private val conf = plugin.conf
 
     @EventHandler
@@ -25,7 +24,7 @@ class PlayerJoinListener : Listener {
                     val ipParse = IpParseFactory.getIpParse(playerAddress)
                     val result = ipParse.getFallback()
                     IpAttributeMap.playerIpAttributeMap[playerName] = result
-                    plugin.log("Player named $playerName connect to proxy from ${ipParse.getProvince()}${ipParse.getCity()} ${ipParse.getISP()}")
+                    plugin.log("Player named $playerName connected from ${ipParse.getProvince()}${ipParse.getCity()} ${ipParse.getISP()}")
                 }
             }.run()
     }
@@ -38,5 +37,10 @@ class PlayerJoinListener : Listener {
                 .replace("%ipAttr%", ipAttr))
         }
     }
+
+    init {
+        this.plugin = plugin
+    }
+
 }
 

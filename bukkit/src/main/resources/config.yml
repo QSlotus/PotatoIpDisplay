@@ -32,7 +32,7 @@ messages:
     # 是否在玩家登录后发送一条消息显示 IP 归属地。
     enabled: true
     # 消息格式
-    string: "§7[§6PotatoIpDisplay§7] §e您当前IP归属地 §7[§b%ipAttr%§7]"
+    string: "§7[§6PotatoIPDisplay§7] §e您当前IP归属地 §7[§b%ipAttr%§7]"
 
 # Placeholder API 设置
 papi:
