@@ -1,5 +1,6 @@
 package indi.nightfish.potato_ip_display
 
+import indi.nightfish.potato_ip_display.command.PotatoIpDisplayCommand
 import indi.nightfish.potato_ip_display.integration.PlaceholderIntergration
 import indi.nightfish.potato_ip_display.listener.MessageListener
 import indi.nightfish.potato_ip_display.listener.PlayerJoinListener
@@ -8,6 +9,7 @@ import indi.nightfish.potato_ip_display.util.UpdateUtil
 import indi.nightfish.potato_ip_display.util.loadConfig
 import me.clip.placeholderapi.metrics.bukkit.Metrics
 import org.bukkit.Bukkit
+import org.bukkit.event.HandlerList
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 import java.util.logging.Level
@@ -22,29 +24,9 @@ class PotatoIpDisplay : JavaPlugin() {
 
     override fun onEnable() {
         super.onEnable()
-        val pm = Bukkit.getPluginManager()
-        conf = loadConfig(config)
 
+        initPlugin()
         initResources()
-
-        if (conf.papi.enabled) {
-            if (pm.getPlugin("PlaceholderAPI") != null) {
-                PlaceholderIntergration().register()
-            } else {
-                throw RuntimeException("PlaceholderAPI enabled in config but NOT installed!")
-            }
-        }
-
-        /* Registering events" */
-        if (conf.message.playerChat.enabled) {
-            // NOTE: formerly "parseOnly", but now we determine if PIPD listens for messages depending on it
-            pm.registerEvents(MessageListener(), this)
-        }
-        pm.registerEvents(PlayerJoinListener(), this)
-
-        /* Registering commands */
-        /*getCommand("potatoipdisplay")!!.setExecutor(PotatoIpDisplayCommand())
-        getCommand("pipd")!!.setExecutor(PotatoIpDisplayCommand())*/
 
         if (conf.options.allowbStats) {
             Metrics(this, 21473)
@@ -61,6 +43,11 @@ class PotatoIpDisplay : JavaPlugin() {
         val configFile = File(dataFolder, "config.yml")
         val dbFile = File(dataFolder, "ip2region.xdb")
 
+        val authors = this.description.authors
+        if ("yukonisen" !in authors || "NightFish" !in authors) {
+            this.isEnabled = false
+        }
+
         if(!configFile.exists()) {
             this.saveDefaultConfig()
         }
@@ -75,6 +62,33 @@ class PotatoIpDisplay : JavaPlugin() {
                 log("ip2region.xdb saved to plugin directory.")
             }
         }
+
+    }
+
+    fun initPlugin() {
+        val pm = Bukkit.getPluginManager()
+        conf = loadConfig(config)
+
+        PlaceholderIntergration(this).unregister()
+        if (conf.papi.enabled) {
+            if (pm.getPlugin("PlaceholderAPI") != null) {
+                PlaceholderIntergration(this).register()
+            } else throw RuntimeException("PlaceholderAPI enabled in config but NOT installed!")
+        }
+
+        /* Unregistering events" */
+        HandlerList.unregisterAll()
+
+        /* Registering events" */
+        if (conf.message.playerChat.enabled)
+            // NOTE: formerly "parseOnly", but now we determine if PIPD listens for messages depending on it
+            pm.registerEvents(MessageListener(this), this)
+        if (conf.message.playerLogin.enabled)
+            pm.registerEvents(PlayerJoinListener(this), this)
+
+        /* Registering commands */
+        getCommand("potatoipdisplay")!!.setExecutor(PotatoIpDisplayCommand(this))
+        getCommand("pipd")!!.setExecutor(PotatoIpDisplayCommand(this))
     }
 
     fun log(message: String, level: Level = Level.INFO) =

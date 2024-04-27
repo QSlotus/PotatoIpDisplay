@@ -2,17 +2,14 @@ package indi.nightfish.potato_ip_display.listener
 
 import indi.nightfish.potato_ip_display.PotatoIpDisplay
 import indi.nightfish.potato_ip_display.util.IpAttributeMap
-import me.clip.placeholderapi.PlaceholderAPI
-import org.bukkit.Bukkit
-import org.bukkit.ChatColor
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.AsyncPlayerChatEvent
 
 
-class MessageListener : Listener {
-    private val plugin = Bukkit.getPluginManager().getPlugin("PotatoIpDisplay") as PotatoIpDisplay
+class MessageListener(plugin: PotatoIpDisplay) : Listener {
+    private val plugin: PotatoIpDisplay
     private val conf = plugin.conf
     @EventHandler(priority = EventPriority.LOWEST)
 
@@ -26,6 +23,10 @@ class MessageListener : Listener {
             .replace("%msg%", "%2\$s"))
 
         event.format = chatmsg
+    }
+
+    init {
+        this.plugin = plugin
     }
 
 }

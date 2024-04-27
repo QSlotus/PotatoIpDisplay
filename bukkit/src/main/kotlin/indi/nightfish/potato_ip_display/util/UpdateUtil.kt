@@ -39,23 +39,33 @@ object UpdateUtil {
         }.start()
     }
 
-    fun checkForUpdatesAsync() {
+    fun checkForUpdatesAsync(onComplete: (String) -> Unit) {
         val local: String = plugin.description.version
         val thread = Thread {
-            val request = HttpRequest.newBuilder(URI.create("https://raw.githubusercontent.com/dmzz-yyhyy/PotatoIpDisplay/master/PLUGIN_VERSION")).GET().build()
-            val response = httpClient.send(request, HttpResponse.BodyHandlers.ofString())
-            if (response.statusCode() == 200) {
-                val remote = response.body().trim().split("=")[1]
-                when (compareVersions(local, remote)) {
-                    -1 -> plugin.log("Update available: $remote") /* local < remote */
-                    0 -> plugin.log("Up to date.") /* local = remote */
-                    1 -> return@Thread /* local > remote, NEWER than remote??? */
-                    else -> plugin.log("error while comparing versions: $local vs $remote")
+            try {
+                val request = HttpRequest.newBuilder(URI.create("https://raw.githubusercontent.com/dmzz-yyhyy/PotatoIpDisplay/master/PLUGIN_VERSION")).GET().build()
+                val response = httpClient.send(request, HttpResponse.BodyHandlers.ofString())
+                if (response.statusCode() == 200) {
+                    val remote = response.body().trim().split("=")[1]
+                    when (compareVersions(local, remote)) {
+                        -1 -> onComplete("§b有可用的更新: $remote") /* local < remote */
+                        0 -> onComplete("§a已是最新。") /* local = remote */
+                        1 -> onComplete("§a已是最新。远程: §f$remote") /* local > remote, NEWER than remote??? */
+                        else -> onComplete("unknown error while comparing versions: $local vs $remote")
+                    }
+                } else {
+                    onComplete("§c无法获取当前远程版本。")
                 }
+                return@Thread
+            } catch (e: Exception) {
+                onComplete("§c无法从 GitHub 检查更新。")
+                return@Thread
             }
         }
         thread.start()
     }
+
+
 
     /* p=version[P]lugin, r=version[R]emote */
     private fun compareVersions(p: String, r: String): Int {

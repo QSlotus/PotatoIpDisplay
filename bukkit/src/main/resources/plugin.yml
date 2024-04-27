@@ -5,9 +5,26 @@ authors: ["NightFish", "yukonisen"]
 softdepend: [PlaceholderAPI]
 api-version: 1.13
 
-# commands:
-#  potatoipdisplay:
-#    description: Main command of PotatoIpDisplay.
-#    aliases:
-#      - pipd
-#    usage: /potatoipdisplay
+commands:
+ potatoipdisplay:
+    description: Main command of PotatoIpDisplay.
+    aliases:
+      - pipd
+    usage: /potatoipdisplay
+
+permissions:
+  potatoipdisplay.*:
+    description: "Maximum permissions for PotatoIPDisplay."
+    default: op
+    children:
+      - potatoipdisplay.reload
+      - potatoipdisplay.lookup
+  potatoipdisplay.command:
+    description: "Run PotatoIPDisplay commands"
+    default: op
+  potatoipdisplay.lookup:
+    description: "Look up the attribution info of any player or IP"
+    default: op
+  potatoipdisplay.reload:
+    description: "Reload PotatoIPDisplay"
+    default: op

@@ -3,13 +3,12 @@ package indi.nightfish.potato_ip_display.integration
 import indi.nightfish.potato_ip_display.PotatoIpDisplay
 import indi.nightfish.potato_ip_display.parser.IpParseFactory
 import me.clip.placeholderapi.expansion.PlaceholderExpansion
-import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
 
-class PlaceholderIntergration : PlaceholderExpansion() {
+class PlaceholderIntergration(plugin: PotatoIpDisplay) : PlaceholderExpansion() {
 
-    private val plugin = Bukkit.getPluginManager().getPlugin("PotatoIpDisplay") as PotatoIpDisplay
+    private val plugin: PotatoIpDisplay
 
     override fun getAuthor(): String {
         return "[NightFish, yukonisen]"
@@ -39,6 +38,10 @@ class PlaceholderIntergration : PlaceholderExpansion() {
             "fallback" -> ipParse.getFallback()
             else -> null
         }
+    }
+
+    init {
+        this.plugin = plugin
     }
 
 }
