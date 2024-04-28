@@ -25,12 +25,14 @@
 
 ## 命令与权限
 
-| 命令                                  | 描述      | 权限                        |
-|:------------------------------------|:--------|:--------------------------|
-| /pipd                               | 等效      | `potatoipdisplay.command` | 
-| /potatoipdisplay                    | 插件信息    | `potatoipdisplay.command` | 
-| /potatoipdisplay lookup <玩家\|IPv4 > | 查询玩家或IP | `potatoipdisplay.lookup`  | 
-| /potatoipdisplay reload             | 重载插件    | `potatoipdisplay.reload`  | 
+| 命令                                    | 描述                     | 权限                        | 默认 |
+|:--------------------------------------|:-----------------------|:--------------------------|:---|
+| /pipd                                 | 等效于 `/potatoipdisplay` | `potatoipdisplay.command` | OP |
+| /potatoipdisplay                      | 插件信息                   | `potatoipdisplay.command` | OP |
+| /potatoipdisplay about                | 显示关于信息                 | `potatoipdisplay.command` | OP |
+| /potatoipdisplay clear [player/cache] | 清除玩家/查询缓存              | `potatoipdisplay.command` | OP |
+| /potatoipdisplay lookup [玩家/IPv4]     | 查询玩家或IP                | `potatoipdisplay.lookup`  | OP |
+| /potatoipdisplay reload               | 重载插件                   | `potatoipdisplay.reload`  | OP |
 
 ## Placeholder API
 
