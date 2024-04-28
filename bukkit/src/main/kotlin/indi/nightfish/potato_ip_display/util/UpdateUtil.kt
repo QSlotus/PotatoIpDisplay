@@ -49,16 +49,16 @@ object UpdateUtil {
                     val remote = response.body().trim().split("=")[1]
                     when (compareVersions(local, remote)) {
                         -1 -> onComplete("§b有可用的更新: $remote") /* local < remote */
-                        0 -> onComplete("§a已是最新。") /* local = remote */
+                        0 -> onComplete("§a已是最新") /* local = remote */
                         1 -> onComplete("§a已是最新。远程: §f$remote") /* local > remote, NEWER than remote??? */
                         else -> onComplete("unknown error while comparing versions: $local vs $remote")
                     }
                 } else {
-                    onComplete("§c无法获取当前远程版本。")
+                    onComplete("§c无法获取当前远程版本")
                 }
                 return@Thread
             } catch (e: Exception) {
-                onComplete("§c无法从 GitHub 检查更新。")
+                onComplete("§c无法从 GitHub 检查更新")
                 return@Thread
             }
         }
