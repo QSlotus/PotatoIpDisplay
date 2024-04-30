@@ -15,6 +15,12 @@ import java.io.File
 import java.util.logging.Level
 
 class PotatoIpDisplay : JavaPlugin() {
+
+    companion object Instance {
+        lateinit var instance: PotatoIpDisplay
+        val plugin by lazy { instance }
+    }
+
     lateinit var conf: Config
 
     override fun onLoad() {
@@ -24,13 +30,11 @@ class PotatoIpDisplay : JavaPlugin() {
 
     override fun onEnable() {
         super.onEnable()
-
+        instance = this
         initPlugin()
         initResources()
 
-        if (conf.options.allowbStats) {
-            Metrics(this, 21473)
-        }
+        if (conf.options.allowbStats) Metrics(this, 21473)
         log("PotatoIpDisplay has been enabled. [mode: ${conf.options.mode}]")
     }
 
@@ -42,20 +46,17 @@ class PotatoIpDisplay : JavaPlugin() {
     private fun initResources() {
         val configFile = File(dataFolder, "config.yml")
         val dbFile = File(dataFolder, "ip2region.xdb")
-
         val authors = this.description.authors
-        if ("yukonisen" !in authors || "NightFish" !in authors) {
-            this.isEnabled = false
-        }
-
-        if(!configFile.exists()) {
-            this.saveDefaultConfig()
-        }
         val isLite = false
+        val ip2regionDatabaseURL =
+            "https://raw.githubusercontent.com/lionsoul2014/ip2region/master/data/ip2region.xdb"
+
+        if ("yukonisen" !in authors || "NightFish" !in authors) this.isEnabled = false
+        if (!configFile.exists()) this.saveDefaultConfig()
+
         if (conf.options.mode == "ip2region" && !dbFile.exists()) {
-            if(isLite) {
-                UpdateUtil.downloadDatabase(
-                    "https://raw.githubusercontent.com/lionsoul2014/ip2region/master/data/ip2region.xdb", dbFile.toPath())
+            if (isLite) {
+                UpdateUtil.downloadDatabase(ip2regionDatabaseURL, dbFile.toPath())
                 // TODO: Download db files from internet for lite builds
             } else { /* For non-lite builds, ip2region.xdb included in jar */
                 saveResource("ip2region.xdb", false)
@@ -69,26 +70,25 @@ class PotatoIpDisplay : JavaPlugin() {
         val pm = Bukkit.getPluginManager()
         conf = loadConfig(config)
 
-        PlaceholderIntergration(this).unregister()
+        PlaceholderIntergration().unregister()
         if (conf.papi.enabled) {
             if (pm.getPlugin("PlaceholderAPI") != null) {
-                PlaceholderIntergration(this).register()
+                PlaceholderIntergration().register()
             } else throw RuntimeException("PlaceholderAPI enabled in config but NOT installed!")
         }
 
-        /* Unregistering events" */
+        /* Unregistering events */
         HandlerList.unregisterAll()
 
-        /* Registering events" */
+        /* Registering events */
         if (conf.message.playerChat.enabled)
-            // NOTE: formerly "parseOnly", but now we determine if PIPD listens for messages depending on it
-            pm.registerEvents(MessageListener(this), this)
+            pm.registerEvents(MessageListener(), this)
         if (conf.message.playerLogin.enabled)
-            pm.registerEvents(PlayerJoinListener(this), this)
+            pm.registerEvents(PlayerJoinListener(), this)
 
         /* Registering commands */
-        getCommand("potatoipdisplay")!!.setExecutor(PotatoIpDisplayCommand(this))
-        getCommand("pipd")!!.setExecutor(PotatoIpDisplayCommand(this))
+        getCommand("potatoipdisplay")!!.setExecutor(PotatoIpDisplayCommand())
+        getCommand("pipd")!!.setExecutor(PotatoIpDisplayCommand())
     }
 
     fun log(message: String, level: Level = Level.INFO) =

@@ -19,6 +19,7 @@ permissions:
     children:
       - potatoipdisplay.reload
       - potatoipdisplay.lookup
+      - potatoipdisplay.command
   potatoipdisplay.command:
     description: "Run PotatoIPDisplay commands"
     default: op

@@ -13,7 +13,9 @@ import java.util.concurrent.CompletableFuture
 class IpApiParser(private val ip: String) : IpParse {
     private val get = getIpApiDataAsync()
     private val unknown: String = "未知"
-    private val isReservedRange: Boolean = (get["status"]?.asString == "fail") && (get["message"]?.asString == "reserved range")
+    private val isReservedRange: Boolean =
+        (get["status"]?.asString == "fail") && (get["message"]?.asString == "reserved range")
+
     override fun getRegion(): String =
         get["regionName"]?.asString ?: unknown
 
@@ -64,7 +66,8 @@ class IpApiParser(private val ip: String) : IpParse {
                     IpAttributeMap.ipApiRawDataMap[ip] = jsonObject
                 }
             } catch (_: Exception) {
-                val jsonObject: JsonObject = Gson().fromJson("{\"err\":\"failed\"}", JsonObject::class.java)
+                val jsonObject: JsonObject =
+                    Gson().fromJson("{\"err\":\"failed\"}", JsonObject::class.java)
                 future.complete(jsonObject)
                 throw RuntimeException("Error while querying $ip. Common network problem.")
             }
