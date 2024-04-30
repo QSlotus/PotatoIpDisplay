@@ -13,10 +13,15 @@ import org.bukkit.command.TabExecutor
 /**
  * The /potatoipdisplay command.
  */
-class PotatoIpDisplayCommand(plugin: PotatoIpDisplay) : TabExecutor {
-    private val plugin: PotatoIpDisplay
+class PotatoIpDisplayCommand : TabExecutor {
+    private val plugin = PotatoIpDisplay.plugin
 
-    override fun onCommand(sender: CommandSender, cmd: Command, label: String, args: Array<String>): Boolean {
+    override fun onCommand(
+        sender: CommandSender,
+        cmd: Command,
+        label: String,
+        args: Array<String>
+    ): Boolean {
 
         if (!sender.hasPermission("potatoipdisplay.command")) {
             sendNoPerms(sender)
@@ -47,6 +52,7 @@ class PotatoIpDisplayCommand(plugin: PotatoIpDisplay) : TabExecutor {
                 sendMsg(sender, "使用文档§f > §7\n https://upt.curiousers.org/docs/PotatoIpDisplay/intro", false)
                 return true
             }
+
             "reload" -> {
                 if (!sender.hasPermission("potatoipdisplay.reload")) {
                     sendNoPerms(sender)
@@ -64,6 +70,7 @@ class PotatoIpDisplayCommand(plugin: PotatoIpDisplay) : TabExecutor {
                 }
                 return true
             }
+
             "lookup" -> {
                 if (!sender.hasPermission("potatoipdisplay.lookup")) {
                     sendNoPerms(sender)
@@ -91,10 +98,12 @@ class PotatoIpDisplayCommand(plugin: PotatoIpDisplay) : TabExecutor {
                 } else sendMsg(sender, "§c查询的玩家离线，或 IPv4 无效", true)
                 return true
             }
+
             "clear" -> {
                 if (args.size < 2) {
                     val map = IpAttributeMap
-                    val totalCacheSize = map.ip2regionRawDataMap.size + map.pconlineRawDataMap.size + map.ipApiRawDataMap.size
+                    val totalCacheSize =
+                        map.ip2regionRawDataMap.size + map.pconlineRawDataMap.size + map.ipApiRawDataMap.size
                     val playerCacheSize = map.playerIpAttributeMap.size
                     sendMsg(sender, "§e/$label clear player §f>> 清除玩家缓存 (当前 §b$playerCacheSize §f项)", false)
                     sendMsg(sender, "§e/$label clear cache §f>> 清除查询缓存 (当前 §b$totalCacheSize §f项)", false)
@@ -105,6 +114,7 @@ class PotatoIpDisplayCommand(plugin: PotatoIpDisplay) : TabExecutor {
                 sendMsg(sender, "§f清除完成，共清除了 §b$clearedItems §f项", true)
                 return true
             }
+
             else -> {
                 sendMsg(sender, "§c未知命令", true)
                 return true
@@ -112,24 +122,35 @@ class PotatoIpDisplayCommand(plugin: PotatoIpDisplay) : TabExecutor {
         }
     }
 
-    override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<String>): List<String> {
+    override fun onTabComplete(
+        sender: CommandSender,
+        command: Command,
+        alias: String,
+        args: Array<String>
+    ): List<String> {
         return when {
             !sender.hasPermission("potatoipdisplay.command") -> emptyList()
-            args.size == 1 -> listOf("lookup", "reload", "clear", "about").filter { it.startsWith(args[0]) }
+            args.size == 1 -> listOf("lookup", "reload", "clear", "about").filter {
+                it.startsWith(args[0])
+            }
+
             args.size == 2 && (args[0] == "lookup") -> {
-                val matchingPlayers = plugin.server.onlinePlayers.map { it.name }.filter { it.startsWith(args[1]) }
+                val matchingPlayers =
+                    plugin.server.onlinePlayers.map { it.name }.filter { it.startsWith(args[1]) }
                 matchingPlayers + listOf("127.0.0.1")
             }
+
             args.size == 2 && (args[0] == "clear") -> {
                 listOf("player", "cache")
             }
+
             else -> emptyList()
         }
     }
 
     private fun lookup(ip: String): String {
         val ipParse = IpParseFactory.getIpParse(ip)
-        return  "§f - IP:  §e$ip \n" +
+        return "§f - IP:  §e$ip \n" +
                 "§f - 国家:  §e${ipParse.getCountry()} \n" +
                 "§f - 省市:  §e${ipParse.getProvince()} ${ipParse.getCity()} \n" +
                 "§f - ISP:  §e${ipParse.getISP()} \n" +
@@ -137,7 +158,8 @@ class PotatoIpDisplayCommand(plugin: PotatoIpDisplay) : TabExecutor {
     }
 
     private fun validate(ip: String): Boolean {
-        val ipRegex = """(\b25[0-5]|\b2[0-4][0-9]|\b[01]?[0-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}""".toRegex()
+        val ipRegex =
+            """(\b25[0-5]|\b2[0-4][0-9]|\b[01]?[0-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}""".toRegex()
         return ip.matches(ipRegex)
     }
 
@@ -150,6 +172,7 @@ class PotatoIpDisplayCommand(plugin: PotatoIpDisplay) : TabExecutor {
                 clearedItems += map.playerIpAttributeMap.size
                 map.playerIpAttributeMap.clear()
             }
+
             "cache" -> {
                 clearedItems += map.ip2regionRawDataMap.size
                 clearedItems += map.pconlineRawDataMap.size
@@ -158,12 +181,11 @@ class PotatoIpDisplayCommand(plugin: PotatoIpDisplay) : TabExecutor {
                 map.pconlineRawDataMap.clear()
                 map.ipApiRawDataMap.clear()
             }
+
             else -> {}
         }
         return clearedItems
     }
-
-
 
 
     private fun sendMsg(sender: CommandSender, msg: String, showPrefix: Boolean) {
@@ -173,10 +195,6 @@ class PotatoIpDisplayCommand(plugin: PotatoIpDisplay) : TabExecutor {
 
     private fun sendNoPerms(sender: CommandSender) {
         sender.sendMessage("§c您没有使用此命令的权限")
-    }
-
-    init {
-        this.plugin = plugin
     }
 
 }

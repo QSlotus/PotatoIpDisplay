@@ -3,14 +3,13 @@ package indi.nightfish.potato_ip_display.parser.provider
 import indi.nightfish.potato_ip_display.PotatoIpDisplay
 import indi.nightfish.potato_ip_display.parser.IpParse
 import indi.nightfish.potato_ip_display.util.IpAttributeMap
-import org.bukkit.Bukkit
 import org.lionsoul.ip2region.xdb.Searcher
 import java.io.File
 import java.util.concurrent.CompletableFuture
 
 
 class Ip2regionParser(private val ip: String) : IpParse {
-    private val plugin = Bukkit.getPluginManager().getPlugin("PotatoIpDisplay") as PotatoIpDisplay
+    private val plugin = PotatoIpDisplay.plugin
     private val dataFolder get() = plugin.dataFolder
     private val dbPath = File(dataFolder, "ip2region.xdb").toPath().toString()
     private val unknown: String = "未知"
@@ -19,10 +18,8 @@ class Ip2regionParser(private val ip: String) : IpParse {
     private val searcher by lazy {
         when (xdbBuffer) {
             "none" -> Searcher.newWithFileOnly(dbPath)
-            "vindex" -> Searcher.newWithVectorIndex(dbPath,
-                Searcher.loadVectorIndexFromFile(dbPath))
-            "cbuff" -> Searcher.newWithBuffer(
-                Searcher.loadContentFromFile(dbPath))
+            "vindex" -> Searcher.newWithVectorIndex(dbPath, Searcher.loadVectorIndexFromFile(dbPath))
+            "cbuff" -> Searcher.newWithBuffer(Searcher.loadContentFromFile(dbPath))
             else -> throw IllegalArgumentException("Invalid xdbBuffer in config >> $xdbBuffer")
         }
     }
@@ -76,9 +73,7 @@ class Ip2regionParser(private val ip: String) : IpParse {
 
     private fun getIp2regionDataAsync(): String {
         val map = IpAttributeMap.ip2regionRawDataMap[ip]
-        if (map != null) {
-           return map
-        }
+        if (map != null) return map
 
         val future = CompletableFuture<String>()
         val thread = Thread {

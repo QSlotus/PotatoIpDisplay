@@ -6,9 +6,8 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion
 import org.bukkit.entity.Player
 
 
-class PlaceholderIntergration(plugin: PotatoIpDisplay) : PlaceholderExpansion() {
-
-    private val plugin: PotatoIpDisplay
+class PlaceholderIntergration : PlaceholderExpansion() {
+    private val plugin = PotatoIpDisplay.plugin
 
     override fun getAuthor(): String {
         return "[NightFish, yukonisen]"
@@ -38,10 +37,6 @@ class PlaceholderIntergration(plugin: PotatoIpDisplay) : PlaceholderExpansion() 
             "fallback" -> ipParse.getFallback()
             else -> null
         }
-    }
-
-    init {
-        this.plugin = plugin
     }
 
 }

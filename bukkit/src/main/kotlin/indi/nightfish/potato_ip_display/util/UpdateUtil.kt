@@ -13,8 +13,7 @@ import kotlin.math.min
 
 object UpdateUtil {
     private val httpClient = HttpClient.newHttpClient()
-    private val plugin = Bukkit.getPluginManager().getPlugin("PotatoIpDisplay") as PotatoIpDisplay
-
+    private val plugin = PotatoIpDisplay.plugin
 
     fun downloadDatabase(url: String, path: Path) {
         plugin.log("Start download database file")
@@ -28,11 +27,13 @@ object UpdateUtil {
                 if (response.statusCode() != 200) {
                     throw IOException("Download database file FAILED: ${response.statusCode()}")
                 }
-
                 plugin.log("Successful downloaded to $path")
             } catch (e: Exception) {
-                plugin.log("Download Failed! Please manually download from [$url],\n" +
-                        "then move it to the plugin directory! (plugins\\PotatoIpDisplay\\{FILE})", Level.WARNING)
+                plugin.log(
+                    "Download Failed! Please manually download from [$url],\n" +
+                            "then move it to the plugin directory! (plugins\\PotatoIpDisplay\\{FILE})",
+                    Level.WARNING
+                )
                 /*e.printStackTrace()*/
                 Bukkit.getPluginManager().disablePlugin(plugin)
             }
@@ -41,9 +42,11 @@ object UpdateUtil {
 
     fun checkForUpdatesAsync(onComplete: (String) -> Unit) {
         val local: String = plugin.description.version
+        val githubUpdateURL =
+            "https://raw.githubusercontent.com/dmzz-yyhyy/PotatoIpDisplay/master/PLUGIN_VERSION"
         val thread = Thread {
             try {
-                val request = HttpRequest.newBuilder(URI.create("https://raw.githubusercontent.com/dmzz-yyhyy/PotatoIpDisplay/master/PLUGIN_VERSION")).GET().build()
+                val request = HttpRequest.newBuilder(URI.create(githubUpdateURL)).GET().build()
                 val response = httpClient.send(request, HttpResponse.BodyHandlers.ofString())
                 if (response.statusCode() == 200) {
                     val remote = response.body().trim().split("=")[1]
@@ -53,9 +56,8 @@ object UpdateUtil {
                         1 -> onComplete("§a已是最新。远程: §f$remote") /* local > remote, NEWER than remote??? */
                         else -> onComplete("unknown error while comparing versions: $local vs $remote")
                     }
-                } else {
-                    onComplete("§c无法获取当前远程版本")
-                }
+                } else onComplete("§c无法获取当前远程版本")
+
                 return@Thread
             } catch (e: Exception) {
                 onComplete("§c无法从 GitHub 检查更新")
@@ -64,7 +66,6 @@ object UpdateUtil {
         }
         thread.start()
     }
-
 
 
     /* p=version[P]lugin, r=version[R]emote */
@@ -80,7 +81,6 @@ object UpdateUtil {
         }
         return px.size.compareTo(rx.size)
     }
-
 
 
 }

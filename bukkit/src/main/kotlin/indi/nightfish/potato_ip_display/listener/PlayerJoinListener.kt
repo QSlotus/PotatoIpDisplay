@@ -10,8 +10,8 @@ import org.bukkit.event.player.PlayerLoginEvent
 import org.bukkit.scheduler.BukkitRunnable
 
 
-class PlayerJoinListener(plugin: PotatoIpDisplay) : Listener {
-    private val plugin: PotatoIpDisplay
+class PlayerJoinListener: Listener {
+    val plugin = PotatoIpDisplay.plugin
     private val conf = plugin.conf
 
     @EventHandler
@@ -37,10 +37,5 @@ class PlayerJoinListener(plugin: PotatoIpDisplay) : Listener {
                 .replace("%ipAttr%", ipAttr))
         }
     }
-
-    init {
-        this.plugin = plugin
-    }
-
 }
 
