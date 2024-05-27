@@ -78,7 +78,7 @@ class PotatoIpDisplay : JavaPlugin() {
         }
 
         /* Unregistering events */
-        HandlerList.unregisterAll()
+        HandlerList.unregisterAll(this)
 
         /* Registering events */
         if (conf.message.playerChat.enabled)
