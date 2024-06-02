@@ -19,8 +19,13 @@ class PlayerJoinListener: Listener {
 
         object : BukkitRunnable() {
                 override fun run() {
-                    val playerAddress = event.address.hostAddress
                     val playerName = event.player.name
+                    val originalIP = event.address.hostAddress
+
+                    /* Regenerate player permission override cache on join */
+                    IpAttributeMap.playerPermsMap.remove(playerName)
+
+                    val playerAddress = IpParseFactory.getPlayerAddress(event.player, originalIP)
                     val ipParse = IpParseFactory.getIpParse(playerAddress)
                     val result = ipParse.getFallback()
                     IpAttributeMap.playerIpAttributeMap[playerName] = result

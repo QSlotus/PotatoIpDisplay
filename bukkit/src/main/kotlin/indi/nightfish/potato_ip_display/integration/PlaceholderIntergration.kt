@@ -25,7 +25,8 @@ class PlaceholderIntergration : PlaceholderExpansion() {
         player: Player?,
         params: String
     ): String? {
-        val ip: String = player?.address?.address.toString().replace("/", "")
+        if (player == null) { return null}
+        val ip: String = IpParseFactory.getPlayerAddress(player)
         val ipParse = IpParseFactory.getIpParse(ip)
         return when (params) {
             "ip" -> ip
