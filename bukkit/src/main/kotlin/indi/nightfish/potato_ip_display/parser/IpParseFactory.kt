@@ -24,7 +24,7 @@ object IpParseFactory {
 
     fun getPlayerAddress(player: Player, fallback: String = "0.0.0.0"): String {
         val playerName = player.name
-        val map = IpAttributeMap.playerPermsMap[playerName]
+        val map = IpAttributeMap.playerIpAddressMap[playerName]
         if (map != null) return map
 
         val prefix = "potatoipdisplay.override."
@@ -34,7 +34,7 @@ object IpParseFactory {
         return override?.let {
             val overrideIP = it.permission.substring(prefix.length).replace("-", ".")
             if (regexValidated(overrideIP)) {
-                IpAttributeMap.playerPermsMap[playerName] = overrideIP
+                IpAttributeMap.playerIpAddressMap[playerName] = overrideIP
                 return overrideIP
             } else {
                 plugin.log("Invalid IP for $playerName from permission: ${override.permission}! using fallback $fallback", Level.WARNING)

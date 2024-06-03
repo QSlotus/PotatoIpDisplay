@@ -23,7 +23,7 @@ class PlayerJoinListener: Listener {
                     val originalIP = event.address.hostAddress
 
                     /* Regenerate player permission override cache on join */
-                    IpAttributeMap.playerPermsMap.remove(playerName)
+                    IpAttributeMap.playerIpAddressMap.remove(playerName)
 
                     val playerAddress = IpParseFactory.getPlayerAddress(event.player, originalIP)
                     val ipParse = IpParseFactory.getIpParse(playerAddress)

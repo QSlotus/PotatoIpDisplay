@@ -149,7 +149,7 @@ class PotatoIpDisplayCommand : TabExecutor {
 
     private fun lookup(ip: String, playerName: String = ""): String {
         val ipParse = IpParseFactory.getIpParse(ip)
-        val mod = if (IpAttributeMap.playerPermsMap[playerName] != null) "§a*" else ""
+        val mod = if (IpAttributeMap.playerIpAddressMap[playerName] != null) "§a*" else ""
         return "§f - IP:  §e$ip$mod \n" +
                 "§f - 国家:  §e${ipParse.getCountry()} \n" +
                 "§f - 省市:  §e${ipParse.getProvince()} ${ipParse.getCity()} \n" +
