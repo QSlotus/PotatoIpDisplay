@@ -87,12 +87,11 @@ class PotatoIpDisplayCommand : TabExecutor {
                 val player = Bukkit.getServer().getPlayer(target)
                 if (player != null) {
                     sendMsg(sender, "§f查询玩家: §b$target", true)
-                    val playerAddress: String = player.address?.address.toString().replace("/", "")
-                    sendMsg(sender, lookup(playerAddress), false)
+                    sendMsg(sender, lookup(IpParseFactory.getPlayerAddress(player), player.name), false)
                     return true
                 }
 
-                if (validate(target)) {
+                if (IpParseFactory.regexValidated(target)) {
                     sendMsg(sender, "§f查询 IPv4: §b$target", true)
                     sendMsg(sender, lookup(target), false)
                 } else sendMsg(sender, "§c查询的玩家离线，或 IPv4 无效", true)
@@ -148,19 +147,14 @@ class PotatoIpDisplayCommand : TabExecutor {
         }
     }
 
-    private fun lookup(ip: String): String {
+    private fun lookup(ip: String, playerName: String = ""): String {
         val ipParse = IpParseFactory.getIpParse(ip)
-        return "§f - IP:  §e$ip \n" +
+        val mod = if (IpAttributeMap.playerIpAddressMap[playerName] != null) "§a*" else ""
+        return "§f - IP:  §e$ip$mod \n" +
                 "§f - 国家:  §e${ipParse.getCountry()} \n" +
                 "§f - 省市:  §e${ipParse.getProvince()} ${ipParse.getCity()} \n" +
                 "§f - ISP:  §e${ipParse.getISP()} \n" +
                 "§f - IP属地:  §a${ipParse.getFallback()}"
-    }
-
-    private fun validate(ip: String): Boolean {
-        val ipRegex =
-            """(\b25[0-5]|\b2[0-4][0-9]|\b[01]?[0-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}""".toRegex()
-        return ip.matches(ipRegex)
     }
 
     private fun clear(target: String): Int {

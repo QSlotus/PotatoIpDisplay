@@ -7,4 +7,5 @@ object IpAttributeMap {
     val pconlineRawDataMap: MutableMap<String, JsonObject> = mutableMapOf()
     val ipApiRawDataMap: MutableMap<String, JsonObject> = mutableMapOf()
     val playerIpAttributeMap: MutableMap<String, String> = mutableMapOf()
+    val playerIpAddressMap: MutableMap<String, String> = mutableMapOf()
 }
