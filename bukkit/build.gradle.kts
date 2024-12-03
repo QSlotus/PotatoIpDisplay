@@ -8,7 +8,7 @@ plugins {
 repositories {
     mavenCentral()
     maven ("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
-    maven ("https://repo.helpch.at/me")
+    maven ("https://repo.helpch.at/releases")
 }
 
 dependencies {
