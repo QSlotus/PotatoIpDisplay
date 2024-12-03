@@ -24,13 +24,10 @@ class IpApiParser(private val ip: String) : IpParse {
             ?.replace("省", "") ?: unknown
 
     override fun getProvince(): String =
-        get["regionName"]?.asString
-            ?.replace("省", "")
-            ?.replace("市", "") ?: unknown
+        get["regionName"]?.asString ?: unknown
 
     override fun getCity(): String =
-        get["city"]?.asString
-            ?.replace("市", "") ?: unknown
+        get["city"]?.asString ?: unknown
 
     override fun getISP(): String {
         if (isReservedRange) return "保留地址"
