@@ -14,7 +14,7 @@ repositories {
 dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     compileOnly("org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT")
-    compileOnly("me.clip:placeholderapi:2.11.4")
+    compileOnly("me.clip:placeholderapi:2.11.6")
     implementation("org.lionsoul:ip2region:2.7.0")
 }
 val pluginVersion = project.parent?.version
