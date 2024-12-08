@@ -26,8 +26,8 @@ class IpApiParser(private val ip: String) : IpParse {
     override fun getProvince(): String =
         get["regionName"]?.asString
             ?.replace("省", "")
-            ?.replace("市", "")
-            ?.replace("特别市", "")?: unknown
+            ?.replace("特别市", "")
+            ?.replace("市", "")?: unknown
 
     override fun getCity(): String =
         get["city"]?.asString
